@@ -1,4 +1,4 @@
-name: openapi-mock   # 名称
+name: mock
 on: [push, pull_request]
 jobs:
   lint:
@@ -56,4 +56,4 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v1
       - name: Go Build
-        run: go build
+        run: go build -ldflags="-s -w" -installsuffix cgo -o mock cmd/main.go
