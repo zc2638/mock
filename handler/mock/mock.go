@@ -95,14 +95,14 @@ func Any() gin.HandlerFunc {
 			c.JSON(http.StatusOK, BuildResult(c, body, 0, nil))
 			return
 		}
-		respBody, err := resp.ParseBody()
-		if err != nil {
-			c.JSON(http.StatusOK, BuildResult(c, body, 0, gin.H{
+		var nextResp interface{}
+		if err := resp.ParseJSON(&nextResp); err != nil {
+			c.JSON(http.StatusOK, BuildResult(c, body, resp.StatusCode, gin.H{
 				"status":  "error",
 				"message": err.Error(),
 			}))
 		}
-		c.JSON(http.StatusOK, BuildResult(c, body, 0, string(respBody)))
+		c.JSON(http.StatusOK, BuildResult(c, body, resp.StatusCode, nextResp))
 	}
 }
 
