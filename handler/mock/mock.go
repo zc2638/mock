@@ -130,6 +130,9 @@ func CallSleep(ms int64) {
 }
 
 func CallFault(c *gin.Context, fault *Fault) int {
+	if fault == nil {
+		return 0
+	}
 	rand.Seed(time.Now().UnixNano())
 	i := rand.Intn(100)
 	fmt.Printf("%d < %d\n", i, fault.Percent)
