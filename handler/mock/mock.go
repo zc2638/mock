@@ -59,6 +59,10 @@ func Any() gin.HandlerFunc {
 			return
 		}
 		defer c.Request.Body.Close()
+		if len(body) == 0 {
+			c.JSON(http.StatusOK, BuildResult(c, nil, 0, nil))
+			return
+		}
 		if err := json.Unmarshal(body, &calls); err != nil {
 			ctr.BadRequest(c.Writer, err)
 			return
@@ -97,10 +101,8 @@ func Any() gin.HandlerFunc {
 		}
 		var nextResp interface{}
 		if err := resp.ParseJSON(&nextResp); err != nil {
-			c.JSON(http.StatusOK, BuildResult(c, body, resp.StatusCode, gin.H{
-				"status":  "error",
-				"message": err.Error(),
-			}))
+			c.JSON(http.StatusOK, BuildResult(c, body, resp.StatusCode, string(resp.Result)))
+			return
 		}
 		c.JSON(http.StatusOK, BuildResult(c, body, resp.StatusCode, nextResp))
 	}
