@@ -1,4 +1,4 @@
-FROM golang:1.15.1-alpine as builder
+FROM golang:1.16-alpine as builder
 ENV GOPROXY=https://goproxy.io,direct
 ENV GO111MODULE=on
 
@@ -31,4 +31,4 @@ COPY --from=builder /work/config.yaml /work/config.yaml
 COPY --from=upx /work/mock /work/mock
 
 WORKDIR /work
-CMD ["/mock"]
+CMD ["./mock"]
