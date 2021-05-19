@@ -16,6 +16,7 @@ limitations under the License.
 package app
 
 import (
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/pkgms/go/server"
 	"github.com/spf13/cobra"
@@ -43,6 +44,12 @@ func NewServerCommand() *cobra.Command {
 }
 
 func Run(cmd *cobra.Command, args []string) error {
+	// print all envs
+	for _, v := range os.Environ() {
+		fmt.Println(v)
+	}
+	fmt.Println()
+
 	cfg, err := global.ParseConfig(cfgFile)
 	if err != nil {
 		return err
